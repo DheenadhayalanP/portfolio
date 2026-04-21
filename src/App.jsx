@@ -41,13 +41,12 @@ export default function App() {
 
     setLoadingMail(true);
 
-    emailjs
-      .sendForm(
-        "service_ej0h92w",
-        "template_ajnfl8b",
-        form.current,
-        "a8BkkWV5iofm71cqY"
-      )
+    emailjs.sendForm(
+      import.meta.env.VITE_SERVICE_ID,
+      import.meta.env.VITE_TEMPLATE_ID,
+      form.current,
+      import.meta.env.VITE_PUBLIC_KEY
+    )
       .then(() => {
         toast.success("Message sent");
         form.current.reset();
