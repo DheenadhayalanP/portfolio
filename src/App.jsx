@@ -1,9 +1,8 @@
-import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { TypeAnimation } from "react-type-animation";
 import emailjs from "emailjs-com";
-import { useRef } from "react";
 
 export default function App() {
 
@@ -11,20 +10,20 @@ export default function App() {
   const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress);
 
-  // PARALLAX
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
-
   // LOADER
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => setLoading(false), 1500);
   }, []);
+  
 
   // CURSOR GLOW
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
 
 
   const form = useRef();
+
+  const [loadingMail, setLoadingMail] = useState(false);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -416,58 +415,85 @@ export default function App() {
 
           </div>
 
-          {/* RIGHT SIDE FORM */}
+
           <form ref={form} onSubmit={sendEmail} className="space-y-14" noValidate>
 
             {/* NAME */}
             <div className="relative">
-              <input type="text" name="name" required placeholder=" "
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder=" "
                 className="peer w-full bg-transparent border-b border-gray-600 py-3 text-white 
-                focus:outline-none focus:border-transparent 
-                transition-all duration-300 ease-out focus:shadow-[0_2px_20px_rgba(168,85,247,0.15)]"
+      focus:outline-none focus:border-purple-500 
+      focus:shadow-lg focus:shadow-purple-500/20 transition-all duration-300"
               />
 
-              <label className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200 ease-out 
-                peer-focus:opacity-0 peer-focus:-translate-y-2 peer-not-placeholder-shown:opacity-0"
+              <label
+                className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200
+      peer-focus:opacity-0 peer-valid:opacity-0"
               >
                 Your Name
               </label>
 
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] 
-                bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500 ease-out peer-focus:w-full"></span>
+              <span
+                className="absolute bottom-0 left-0 w-0 h-[2px] 
+      bg-gradient-to-r from-blue-500 to-purple-500 
+      transition-all duration-500 peer-focus:w-full"
+              ></span>
             </div>
 
             {/* CONTACT */}
             <div className="relative">
-              <input type="text" name="contact" required placeholder=" "
+              <input
+                type="text"
+                name="contact"
+                required
+                placeholder=" "
                 className="peer w-full bg-transparent border-b border-gray-600 py-3 text-white 
-                focus:outline-none focus:border-transparent transition-all duration-300 ease-out 
-                focus:shadow-[0_2px_20px_rgba(168,85,247,0.15)]"/>
+      focus:outline-none focus:border-purple-500 
+      focus:shadow-lg focus:shadow-purple-500/20 transition-all duration-300"
+              />
 
-              <label className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200 ease-out 
-                peer-focus:opacity-0 peer-focus:-translate-y-2 peer-not-placeholder-shown:opacity-0" >
+              <label
+                className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200
+      peer-focus:opacity-0 peer-valid:opacity-0"
+              >
                 GitHub / LinkedIn / Email
               </label>
 
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 
-                transition-all duration-500 ease-out peer-focus:w-full"></span>
+              <span
+                className="absolute bottom-0 left-0 w-0 h-[2px] 
+      bg-gradient-to-r from-blue-500 to-purple-500 
+      transition-all duration-500 peer-focus:w-full"
+              ></span>
             </div>
 
             {/* MESSAGE */}
             <div className="relative">
-              <textarea name="message" rows="4" required placeholder=" "
+              <textarea
+                name="message"
+                rows="4"
+                required
+                placeholder=" "
                 className="peer w-full bg-transparent border-b border-gray-600 py-3 text-white 
-                focus:outline-none focus:border-transparent transition-all duration-300 ease-out resize-none
-                focus:shadow-[0_2px_20px_rgba(168,85,247,0.15)]"
+      focus:outline-none focus:border-purple-500 
+      focus:shadow-lg focus:shadow-purple-500/20 transition-all duration-300 resize-none"
               ></textarea>
 
-              <label className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200 ease-out 
-                peer-focus:opacity-0 peer-focus:-translate-y-2 peer-not-placeholder-shown:opacity-0">
+              <label
+                className="absolute left-0 top-2 text-gray-400 text-sm transition-all duration-200
+      peer-focus:opacity-0 peer-valid:opacity-0"
+              >
                 Your Message
               </label>
 
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 
-              transition-all duration-500 ease-out peer-focus:w-full"></span>
+              <span
+                className="absolute bottom-0 left-0 w-0 h-[2px] 
+      bg-gradient-to-r from-blue-500 to-purple-500 
+      transition-all duration-500 peer-focus:w-full"
+              ></span>
             </div>
 
             {/* BUTTON */}
@@ -475,15 +501,19 @@ export default function App() {
               type="submit"
               disabled={loadingMail}
               className="px-10 py-3 rounded-full font-semibold
-              bg-gradient-to-r from-blue-500 to-purple-500
-              hover:scale-105 transition duration-300
-              hover:shadow-lg hover:shadow-purple-500/40
-              disabled:opacity-50"
+    bg-gradient-to-r from-blue-500 to-purple-500
+    hover:scale-105 transition duration-300
+    hover:shadow-lg hover:shadow-purple-500/40
+    active:scale-95
+    disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loadingMail ? "Sending..." : "Send Message →"}
             </button>
 
-          </form>
+          </form> 
+          
+
+
 
         </div>
 
