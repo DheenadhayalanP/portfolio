@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { TypeAnimation } from "react-type-animation";

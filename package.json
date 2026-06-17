@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rolldown/binding-win32-x64-msvc": "^1.0.0-rc.12",
     "@tailwindcss/vite": "^4.2.2",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.38.0",
